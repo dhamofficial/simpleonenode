@@ -12,7 +12,8 @@
   "dependencies": {
     "ejs": "2.4.1",
     "express": "4.13.3",
-    "firebase": "^3.6.10"
+    "firebase": "^3.6.10",
+    "mongoose": "^4.8.4"
   },
   "repository": {
     "type": "git",
