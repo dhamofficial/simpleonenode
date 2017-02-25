@@ -1,4 +1,6 @@
 var Todo = require('./models/todo');
+var moment = require('moment');
+var dtFormat='LLLL';
 
 function getTodos(res) {
     Todo.find(function (err, todos) {
@@ -23,12 +25,14 @@ module.exports = function (app) {
 
     // create todo and send back all todos after creation
     app.post('/api/todos', function (req, res) {
-
-        // create a todo, information comes from AJAX request from Angular
-        Todo.create({
+        var now=moment().format(dtFormat);
+        var item={
             text: req.body.text,
+            created:now,
             done: false
-        }, function (err, todo) {
+        };
+        // create a todo, information comes from AJAX request from Angular
+        Todo.create(item, function (err, todo) {
             if (err)
                 res.send(err);
 
