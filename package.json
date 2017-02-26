@@ -2,9 +2,23 @@
   "name": "node-todo",
   "version": "0.0.1",
   "description": "Simple todo application.",
-  "main": "server.js",
-  "author": "Scotch",
+  "main": "main.js",
+  "scripts": {
+    "start": "concurrently \"node index.js\" \"electron .\""
+  },
+  "author": "Dham",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "todo"
+  ],
+  "devDependencies": {
+    "concurrently": "^3.3.0",
+    "electron": "^1.4.1"
+  },
   "dependencies": {
+    "moment": "^2.17.1",
     "body-parser": "^1.4.3",
     "express": "^4.13.4",
     "method-override": "^2.1.3",
