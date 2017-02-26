@@ -24,6 +24,7 @@ function todoCtrl($scope, $http,Todos){
     Todos.get()
         .success(function(data) {
             $scope.todos = data;
+            //console.log('fetching::',data);
             $scope.loading = false;
         });
 
@@ -60,6 +61,45 @@ function todoCtrl($scope, $http,Todos){
                 $scope.todos = data; // assign our new list of todos
             });
     };
+    $scope.mark = function(task,status) {
+        $scope.loading = true;
+        task.status=status;
+        Todos.update(task._id,task)
+            // if successful creation, call our get function to get all the new todos
+            .success(function(data) {
+                $scope.loading = false;
+                $scope.todos = data; // assign our new list of todos
+            });
+    };
+    
+    
+    $scope.todoList = [];
+    $scope.inProgressList = [];
+    $scope.completedList = [];
+    var statusText='';
+    $scope.sortableOptions = {
+        connectWith: ".connectList",
+        receive: function(event, ui) {
+            var sourceList = ui.sender;
+            var targetList = $(this);
+            var targetNew=$(targetList[0]).hasClass('new-tasks');
+            var targetInprogress=$(targetList[0]).hasClass('inprogress-tasks');
+            var targetCompleted=$(targetList[0]).hasClass('completed-tasks');
+            //console.log(targetNew,targetInprogress,targetCompleted);
+            statusText=targetNew?'New':targetInprogress?'In-Progress':targetCompleted?'Completed':'New';
+        },
+        update: function(e, ui) {
+            if (ui.item.sortable.model == "can't be moved") {
+            ui.item.sortable.cancel();
+        }
+    },
+    stop:function(e, ui){
+        var _id=ui.item[0].id;
+        $scope.mark({_id:_id},statusText);
+    }
+    };
+    
+    
 }
 
 

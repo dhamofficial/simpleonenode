@@ -10,6 +10,9 @@ angular
 			},
 			delete : function(id) {
 				return $http.delete('/api/todos/' + id);
+			},
+			update : function(id,data) {
+				return $http.put('/api/todos/' + id,data);
 			}
 		}
 	}]);

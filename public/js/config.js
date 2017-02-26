@@ -30,6 +30,16 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider) {
             url: "/todo",
             controller:'todoCtrl',
             templateUrl: "views/todo.html",
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            name: 'ui.sortable',
+                            files: ['js/plugins/ui-sortable/sortable.js']
+                        }
+                    ]);
+                }
+            },
             data: { pageTitle: 'todo' }
         })
 }

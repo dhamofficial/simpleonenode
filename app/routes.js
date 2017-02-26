@@ -54,6 +54,19 @@ module.exports = function (app) {
         });
     });
 
+    app.put('/api/todos/:todo_id', function (req, res) {
+        var conditions = { _id: req.params.todo_id }
+        , update = req.body
+        , options = { multi: true };
+        //console.log(update);
+        Todo.update(conditions, update, options, function (err, todo) {
+            if (err)
+                res.send(err);
+            getTodos(res);
+        });
+         
+    });
+
     // application -------------------------------------------------------------
     app.get('*', function (req, res) {
         res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
