@@ -1,19 +1,52 @@
-/**
- * INSPINIA - Responsive Admin Theme
- *
- */
-
-/**
- * MainCtrl - controller
- */
-function MainCtrl() {
-
-    this.userName = 'Example user';
-    this.helloText = 'Welcome in SeedProject';
-    this.descriptionText = 'It is an application skeleton for a typical AngularJS web app. You can use it to quickly bootstrap your angular webapp projects and dev environment for these projects.';
+function mainCtrl($scope,UserService,$state) {
+    $scope.logout = function(){
+        UserService.SetCurrentUser(undefined);
+        $state.go('login');
+    }
 
 };
-
+function loginCtrl($scope,Auth,$state,UserService,$stateParams) {
+    $scope.formData={};
+    var action={
+        loginOk:function(res){
+            var user = res.data.currentuser;
+            UserService.SetCurrentUser(user);
+            $state.go('index.main');
+        },
+        loginNotOk:function(res){
+            //Message.error('Login','Please check your credentials.');
+        }
+    };
+    $scope.login=function(){
+        if($scope.formData.name!=undefined && $scope.formData.password!=undefined){
+            Auth.login($scope.formData).then(action.loginOk,action.loginNotOk);
+        }
+    }
+};
+function userCtrl($scope, $http,Users,UserService,Message) {
+    $scope.formData={};
+    $scope.editmode=false;
+    $scope.init=function(){
+        var user = UserService.GetCurrentUser();
+        $scope.formData={_id:user._id,name:user.name,email:user.email};
+        $scope.editmode=$scope.formData && $scope.formData.name?true:false;
+    }
+    $scope.create = function() {
+        if ($scope.formData.name!=undefined && $scope.formData.email != undefined && $scope.formData.password !=undefined) {
+            $scope.loading = true;
+            var action=!$scope.editmode?Users.create:Users.update;
+            action($scope.formData)
+                .success(function(data) {
+                    Message.success('Profile','Profile Saved');
+                    $scope.loading = false;
+                    if(!$scope.editmode)$scope.formData = {};
+                });
+        }else{
+            Message.error('Validation','Please check mandatory fields.');
+        }
+    };
+    $scope.init();
+};
 function todoCtrl($scope, $http,Todos){
     $scope.formData = {};
     $scope.loading = true;
@@ -64,7 +97,7 @@ function todoCtrl($scope, $http,Todos){
     $scope.mark = function(task,status) {
         $scope.loading = true;
         task.status=status;
-        Todos.update(task._id,task)
+        Todos.update(task)
             // if successful creation, call our get function to get all the new todos
             .success(function(data) {
                 $scope.loading = false;
@@ -105,5 +138,7 @@ function todoCtrl($scope, $http,Todos){
 
 angular
     .module('inspinia')
-    .controller('MainCtrl', MainCtrl)
+    .controller('MainCtrl', mainCtrl)
     .controller('todoCtrl', todoCtrl)
+    .controller('userCtrl', userCtrl)
+    .controller('loginCtrl', loginCtrl)

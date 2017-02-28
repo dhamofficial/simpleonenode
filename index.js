@@ -4,12 +4,15 @@ var app = express(); 						// create our app w/ express
 var mongoose = require('mongoose'); 				// mongoose for mongodb
 var port = process.env.PORT || 8080; 				// set the port
 var database = require('./config/database'); 			// load the database config
+var config = require('./config/config');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var jwt = require('jsonwebtoken');
 
 
 // configuration ===============================================================
+app.set('superSecret', config.secret);
 // mongoose.connect(database.remoteUrl); 	// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
 mongoose.connect(database.localUrl);
 

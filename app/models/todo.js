@@ -9,6 +9,10 @@ module.exports = mongoose.model('Todo', {
         type: Date,
         default: ''
     },
+    updated: {
+        type: Date,
+        default: ''
+    },
     status: {
         type: String,
         default: 'New'

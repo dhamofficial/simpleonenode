@@ -1,5 +1,5 @@
 <!-- Wrapper-->
-<div id="wrapper">
+<div id="wrapper" ng-controller="MainCtrl">
 
     <!-- Navigation -->
     <div ng-include="'views/common/navigation.html'"></div>
@@ -7,7 +7,7 @@
     <!-- Page wraper -->
     <!-- ng-class with current state name give you the ability to extended customization your view -->
     <div id="page-wrapper" class="gray-bg {{$state.current.name}}">
-
+        <toaster-container></toaster-container>
         <!-- Page wrapper -->
         <div ng-include="'views/common/topnavbar.html'"></div>
 
