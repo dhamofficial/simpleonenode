@@ -4,7 +4,7 @@
   "description": "Simple todo application.",
   "main": "main.js",
   "scripts": {
-    "start": "concurrently \"node index.js\" \"electron .\""
+    "start": "concurrently \"node index.js dev\" \"electron .\""
   },
   "author": "Dham",
   "keywords": [
